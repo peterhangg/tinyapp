@@ -12,7 +12,7 @@ function generateRandomString() {
   let shortURL = "";
   for (let i = 0; i < 6; i++) {
     let random = Math.floor(Math.random() * charArray.length);
-    shortURL += i[random];
+    shortURL += charArray[random];
   }
   return shortURL;
 }

@@ -8,11 +8,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
 function generateRandomString() {
-  let charArray = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let charString = "abcdefghijklmnopqrstuvwxyz0123456789";
   let shortURL = "";
   for (let i = 0; i < 6; i++) {
-    let random = Math.floor(Math.random() * charArray.length);
-    shortURL += charArray[random];
+    let random = Math.floor(Math.random() * charString.length);
+    shortURL += charString[random];
   }
   return shortURL;
 }

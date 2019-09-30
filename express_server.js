@@ -52,15 +52,23 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-//// post request ////
-
-app.post("/urls", (req, res) => {
-  urlDatabase[newShortURL] = req.body.longURL; // adds a new shortURL to the urlDatabase when submitted in our form
-  res.redirect("/urls"); // redirects to /urls after submission
+app.get("/u/:shortURL", (req, res) => {
+  const longURL = urlDatabase[req.params.shortURL];
+  res.redirect(longURL);
 });
 
+//// post request ////
+app.post("/urls", (req, res) => {
+  console.log("This is the longURL link", req.body.longURL);
+  if(!req.body.longURL.includes("http://")) { // append http to longURL
+    req.body.longURL = `http://${req.body.longURL}`;
+  }
+  urlDatabase[newShortURL] = req.body.longURL; // adds a new shortURL to the urlDatabase when submitted in our form
+  res.redirect(`/urls/${newShortURL}`); // redirects to /urls after submission
+  console.log(urlDatabase);
+});
 
 //// listen ////
 app.listen(PORT, () => {
   console.log(`Example app listening on ${PORT}!`);
-})
+});

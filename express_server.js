@@ -7,6 +7,16 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
+function generateRandomString() {
+  let charArray = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let shortURL = "";
+  for (let i = 0; i < 6; i++) {
+    let random = Math.floor(Math.random() * charArray.length);
+    shortURL += i[random];
+  }
+  return shortURL;
+}
+
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"

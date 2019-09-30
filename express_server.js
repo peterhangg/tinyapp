@@ -16,6 +16,7 @@ function generateRandomString() {
   }
   return shortURL;
 }
+const newShortURL = generateRandomString();
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -54,8 +55,8 @@ app.get("/urls/:shortURL", (req, res) => {
 //// post request ////
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);   // Long the POST request body to the console
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  urlDatabase[newShortURL] = req.body.longURL; // adds a new shortURL to the urlDatabase when submitted in our form
+  res.redirect("/urls"); // redirects to /urls after submission
 });
 
 

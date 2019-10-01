@@ -2,9 +2,11 @@ const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
 
 
 function generateRandomString() {
@@ -89,6 +91,7 @@ app.post("/urls/:id", (req, res) => {
   // console.log(urlDatabase);
   res.redirect(`/urls`);
 });
+
 
 ///////// SERVER PORT /////////
 app.listen(PORT, () => {

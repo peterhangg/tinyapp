@@ -1,4 +1,3 @@
-//// reqired npm library ////
 const express = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
@@ -64,7 +63,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 ///////// POST REQUEST /////////
 app.post("/urls", (req, res) => {
-  console.log("This is the longURL link", req.body.longURL);
+  // console.log("This is the longURL link", req.body.longURL);
   if(!req.body.longURL.includes("http://")) { // append http to longURL
     req.body.longURL = `http://${req.body.longURL}`;
   }
@@ -73,7 +72,13 @@ app.post("/urls", (req, res) => {
   console.log(urlDatabase);
 });
 
-//// listen ////
+app.post("/urls/:shortURL/delete", (req, res) => {
+  delete urlDatabase[req.params.shortURL];
+  console.log(urlDatabase);
+  res.redirect("/urls");
+});
+
+///////// SERVER PORT /////////
 app.listen(PORT, () => {
   console.log(`Example app listening on ${PORT}!`);
 });

@@ -92,6 +92,12 @@ app.post("/urls/:id", (req, res) => {
   res.redirect(`/urls`);
 });
 
+app.post("/login", (req, res) =>{
+  console.log(req.body);
+  res.cookie("username", req.body.username);
+  console.log(req.body.username);
+  res.redirect("/urls");
+});
 
 ///////// SERVER PORT /////////
 app.listen(PORT, () => {

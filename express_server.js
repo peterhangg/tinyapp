@@ -42,7 +42,7 @@ app.get("/hello", (req, res) => {
 
 // get request to urls
 app.get("/urls", (req, res) => {
-  let templateVars = {urls: urlDatabase };
+  let templateVars = {urls: urlDatabase,  username: req.cookies["username"] };
   res.render("urls_index", templateVars); 
 })
 
@@ -92,10 +92,19 @@ app.post("/urls/:id", (req, res) => {
   res.redirect(`/urls`);
 });
 
+// Login route
 app.post("/login", (req, res) =>{
   console.log(req.body);
   res.cookie("username", req.body.username);
   console.log(req.body.username);
+  res.redirect("/urls");
+});
+
+// Logout route
+app.post("/logout", (req, res) =>{
+  console.log("Before logging out", req.cookies["username"]);
+  res.clearCookie("username");
+  console.log("After logout:", req.cookies["username"]);
   res.redirect("/urls");
 });
 

@@ -3,8 +3,9 @@ const app = express();
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 
-app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({extended: false}));
+
 
 function generateRandomString() {
   let charString = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -72,10 +73,21 @@ app.post("/urls", (req, res) => {
   console.log(urlDatabase);
 });
 
+// delete urls
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   console.log(urlDatabase);
   res.redirect("/urls");
+});
+
+// edit urls
+app.post("/urls/:id", (req, res) => {
+  const editURL = req.body.editURL;
+  const id = req.params.id;
+  urlDatabase[id] = editURL;
+  console.log(req.body);
+  console.log(urlDatabase);
+  res.redirect(`/urls`);
 });
 
 ///////// SERVER PORT /////////

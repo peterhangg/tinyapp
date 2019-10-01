@@ -85,8 +85,8 @@ app.post("/urls/:id", (req, res) => {
   const editURL = req.body.editURL;
   const id = req.params.id;
   urlDatabase[id] = editURL;
-  console.log(req.body);
-  console.log(urlDatabase);
+  // console.log(req.body);
+  // console.log(urlDatabase);
   res.redirect(`/urls`);
 });
 

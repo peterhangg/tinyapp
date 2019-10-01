@@ -43,12 +43,12 @@ app.get("/hello", (req, res) => {
 // get request to urls
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase,  username: req.cookies["username"] };
-  res.render("urls_index", templateVars); 
-})
+  res.render("urls_index", templateVars);
+});
 
 // get request to creating new urls
 app.get("/urls/new", (req, res) => {
- let templateVars = { urls: urlDatabase,  username: req.cookies["username"] };
+  let templateVars = { urls: urlDatabase,  username: req.cookies["username"] };
   res.render("urls_new", templateVars);
 });
 
@@ -59,7 +59,7 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-// get request longURL redirect 
+// get request longURL redirect
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
@@ -68,7 +68,7 @@ app.get("/u/:shortURL", (req, res) => {
 ///////// POST REQUEST /////////
 app.post("/urls", (req, res) => {
   // console.log("This is the longURL link", req.body.longURL);
-  if(!req.body.longURL.includes("http://")) { // append http to longURL
+  if (!req.body.longURL.includes("http://")) { // append http to longURL
     req.body.longURL = `http://${req.body.longURL}`;
   }
   urlDatabase[newShortURL] = req.body.longURL; // adds a new shortURL to the urlDatabase when submitted in our form

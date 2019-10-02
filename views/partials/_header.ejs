@@ -13,14 +13,19 @@
     <div>
       <% if (user) { %>
       <form method="POST" action="/logout">
-        <Label><h6>Logged in as: <%= user.email %></h6></Label>
+        <Label for="email"><h6>Logged in as: <%= user.email %></h6></Label>
         <button type="submit" class="btn btn-info">Logout</button>
+      </form>
       <% } else { %>
       <form method="POST" action="/login">
-        <input type="text" name="username" placeholder="Username">
-        <button type="submit" class="btn btn-info">Login</button>
-      <% } %>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/login">Login</a>
+            <a class="nav-item nav-link" href="/register">Register</a>
+          </div>
+        </div>
       </form>
+      <% } %>
     </div>
   </nav>
 <!-- Login form -->

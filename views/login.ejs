@@ -8,11 +8,12 @@
   <title>Registration Form</title>
 </head>
 <body>
-
-    <% include partials/_header %>
-
-    <div style="border: lightgray solid 1px; padding: 50px 30px 30px; margin: 5rem auto; width: 25rem; border-radius: 10px;">
-        <form method="POST" action="/login">
+  <% include partials/_header %>
+  <div class="row justify-content-center mt-sm-5">
+    <h3>Log in your Account</h3>
+   </div>
+    <div style="border: lightgray solid 1px; padding: 40px 30px 30px; margin: 3rem auto; width: 25rem; border-radius: 10px;">
+      <form method="POST" action="/login">
             <div class="form-group">
               <label for="emailInput">Email address</label>
               <input type="email" class="form-control" id="emailInput" name="email" placeholder="Enter email">
@@ -22,7 +23,7 @@
               <label for="passwordInput">Password</label>
               <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Password">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Login</button>
           </form>
     </div>
     

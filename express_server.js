@@ -90,7 +90,12 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/register", (req, res) => {
   let templateVars = { urls: urlDatabase,  user: users[req.cookies["user.id"]] };
   res.render("register", templateVars);
+});
 
+// login page
+app.get("/login", (req, res) => {
+  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user.id"]] };
+  res.render("login", templateVars);
 });
 
 ///////// POST REQUEST /////////

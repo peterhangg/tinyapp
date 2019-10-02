@@ -113,7 +113,7 @@ app.get("/urls/new", (req, res) => {
 
 // get request to shortURLs
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL].longURL, user: users[req.cookies["user_id"]] };
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], user: users[req.cookies["user_id"]] };
   // console.log("this is the shortURL req.params:", req.params.shortURL);
   console.log(templateVars)
   res.render("urls_show", templateVars);
@@ -121,7 +121,7 @@ app.get("/urls/:shortURL", (req, res) => {
 
 // get request longURL redirect
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL].longURL;
+  const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
 

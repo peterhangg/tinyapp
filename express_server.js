@@ -63,19 +63,19 @@ app.get("/hello", (req, res) => {
 
 // get request to urls
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase,  username: req.cookies["username"] };
+  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user.id"]] };
   res.render("urls_index", templateVars);
 });
 
 // get request to creating new urls
 app.get("/urls/new", (req, res) => {
-  let templateVars = { urls: urlDatabase,  username: req.cookies["username"] };
+  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user.id"]] };
   res.render("urls_new", templateVars);
 });
 
 // get request to shortURLs
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], username: req.cookies["username"] };
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], user: users[req.cookies["user.id"]] };
   // console.log("this is the shortURL req.params:", req.params.shortURL);
   res.render("urls_show", templateVars);
 });
@@ -88,7 +88,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 // registration page 
 app.get("/register", (req, res) => {
-  let templateVars = { urls: urlDatabase,  username: req.cookies["username"] };
+  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user.id"]] };
   res.render("register", templateVars);
 
 });
@@ -131,9 +131,8 @@ app.post("/login", (req, res) =>{
 
 // Logout route
 app.post("/logout", (req, res) =>{
-  console.log("Before logging out", req.cookies["username"]);
-  res.clearCookie("username");
-  console.log("After logout:", req.cookies["username"]);
+  // console.log("user:", users[req.cookies["user.id"]])
+  res.clearCookie("user_id");
   res.redirect("/urls");
 });
 

@@ -26,8 +26,25 @@ const emailCheck = (emailAddress) => {
     }
   }
   return false;
-}
+};
 
+const passwordcheck = (password) => {
+  for (let user in users) {
+    if (users[user].password === password) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const idLookup = (email) => {
+  for (let user in users) {
+    if (users[user].email === email) {
+      return users[user].id;
+    }
+  }
+  return false;
+};
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -128,9 +145,15 @@ app.post("/urls/:id", (req, res) => {
 
 // Login route
 app.post("/login", (req, res) =>{
-  console.log(req.body);
-  res.cookie("username", req.body.username);
-  console.log(req.body.username);
+  const email = req.body.email;
+  const password = req.body.password;
+  if (!emailCheck(email)) {
+    res.status(403).send("Incorrect email");
+  } else if (!passwordcheck(password)) {
+    res.status(403).send("Inocrrect password");
+  } else {
+    res.cookie("user_id", idLookup(email));
+  }
   res.redirect("/urls");
 });
 

@@ -19,6 +19,15 @@ function generateRandomString() {
   return shortURL;
 }
 
+const emailCheck = (emailAddress) => {
+  for (let user in users) {
+    if (users[user].email === emailAddress) {
+      return true;
+    }
+  }
+  return false;
+}
+
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -133,10 +142,17 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const id =  generateRandomString();
-  users[id] = { id, email, password };
-  console.log("user data:",users)
-  res.cookie("user_id", id);
-  res.redirect("/urls");
+
+  if(!email || !password) {
+    res.status(400).send("Please fill out the registation form as it is required.");
+  } else if (emailCheck(email)) {
+    res.status(400).send("This email already exist! Try again.");
+  } else {
+    users[id] = { id, email, password };
+    console.log("User object:",users);
+    res.cookie("user_id", id);
+    res.redirect("/urls");
+  }
 });
 
 

@@ -18,7 +18,6 @@ function generateRandomString() {
   }
   return shortURL;
 }
-const newShortURL = generateRandomString();
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -87,7 +86,7 @@ app.get("/register", (req, res) => {
 
 ///////// POST REQUEST /////////
 app.post("/urls", (req, res) => {
-  // console.log("This is the longURL link", req.body.longURL);
+  const newShortURL = generateRandomString();
   if (!req.body.longURL.includes("http://")) { // append http to longURL
     req.body.longURL = `http://${req.body.longURL}`;
   }
@@ -128,6 +127,18 @@ app.post("/logout", (req, res) =>{
   console.log("After logout:", req.cookies["username"]);
   res.redirect("/urls");
 });
+
+// handles registation form data
+app.post("/register", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const id =  generateRandomString();
+  users[id] = { id, email, password };
+  console.log("user data:",users)
+  res.cookie("user_id", id);
+  res.redirect("/urls");
+});
+
 
 ///////// SERVER PORT /////////
 app.listen(PORT, () => {

@@ -4,8 +4,9 @@ const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
+
 app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
@@ -80,19 +81,20 @@ app.get("/hello", (req, res) => {
 
 // get request to urls
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user.id"]] };
+  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user_id"]] };
+  console.log(templateVars);
   res.render("urls_index", templateVars);
 });
 
 // get request to creating new urls
 app.get("/urls/new", (req, res) => {
-  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user.id"]] };
+  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user_id"]] };
   res.render("urls_new", templateVars);
 });
 
 // get request to shortURLs
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], user: users[req.cookies["user.id"]] };
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], user: users[req.cookies["user_id"]] };
   // console.log("this is the shortURL req.params:", req.params.shortURL);
   res.render("urls_show", templateVars);
 });
@@ -105,13 +107,13 @@ app.get("/u/:shortURL", (req, res) => {
 
 // registration page 
 app.get("/register", (req, res) => {
-  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user.id"]] };
+  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user_id"]] };
   res.render("register", templateVars);
 });
 
 // login page
 app.get("/login", (req, res) => {
-  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user.id"]] };
+  let templateVars = { urls: urlDatabase,  user: users[req.cookies["user_id"]] };
   res.render("login", templateVars);
 });
 
@@ -153,13 +155,14 @@ app.post("/login", (req, res) =>{
     res.status(403).send("Inocrrect password");
   } else {
     res.cookie("user_id", idLookup(email));
+    console.log("user logging in ----->", idLookup(email));
+
   }
   res.redirect("/urls");
 });
 
 // Logout route
 app.post("/logout", (req, res) =>{
-  // console.log("user:", users[req.cookies["user.id"]])
   res.clearCookie("user_id");
   res.redirect("/urls");
 });
@@ -176,8 +179,10 @@ app.post("/register", (req, res) => {
     res.status(400).send("This email already exist! Try again.");
   } else {
     users[id] = { id, email, password };
-    console.log("User object:",users);
+    // console.log("User object:",users);
+    console.log("user registe r", id);
     res.cookie("user_id", id);
+    console.log("Cookies --------->", req.cookies)
     res.redirect("/urls");
   }
 });

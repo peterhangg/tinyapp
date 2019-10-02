@@ -25,6 +25,19 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const users = { 
+  "userRandomID": {
+    id: "userRandomID", 
+    email: "user@example.com", 
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID", 
+    email: "user2@example.com", 
+    password: "dishwasher-funk"
+  }
+}
+
 /////////// GET REQUEST ////////////
 app.get("/", (req, res) => {  // "/" is our root directory
   res.send("Hello!");
@@ -63,6 +76,13 @@ app.get("/urls/:shortURL", (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
+});
+
+// registration page 
+app.get("/register", (req, res) => {
+  let templateVars = { urls: urlDatabase,  username: req.cookies["username"] };
+  res.render("register", templateVars);
+
 });
 
 ///////// POST REQUEST /////////

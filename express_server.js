@@ -82,13 +82,21 @@ app.get("/hello", (req, res) => {
 // get request to urls
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase,  user: users[req.cookies["user_id"]] };
-  console.log(templateVars);
+  if(!req.cookies["user_id"]) {
+    res.redirect("/login");
+    return;
+  }
+  // console.log(templateVars);
   res.render("urls_index", templateVars);
 });
 
 // get request to creating new urls
 app.get("/urls/new", (req, res) => {
   let templateVars = { urls: urlDatabase,  user: users[req.cookies["user_id"]] };
+  if(!req.cookies["user_id"]) {
+    res.redirect("/login");
+    return;
+  }
   res.render("urls_new", templateVars);
 });
 

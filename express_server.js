@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 
 const { generateRandomString } = require('./helpers');
 const { emailCheck } = require('./helpers');
+const { passwordCheck } = require('./helpers');
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,15 +20,6 @@ app.use(cookieSession({
 }));
 
 //////// HELPER FUNCTIONS /////////
-
-const passwordcheck = (password) => {
-  for (let user in users) {
-    if (bcrypt.compareSync(password, users[user].password)) {
-      return true;
-    }
-  }
-  return false;
-};
 
 const idLookup = (email) => {
   for (let user in users) {
@@ -171,7 +163,7 @@ app.post("/login", (req, res) =>{
   const password = req.body.password;
   if (!emailCheck(email, users)) {
     res.status(403).send("Email is not valid!");
-  } else if (!passwordcheck(password)) {
+  } else if (!passwordCheck(password, users)) {
     res.status(403).send("Invalid password");
   } else {
     req.session.user_id = idLookup(email);

@@ -1,5 +1,7 @@
 ///// HELPER FUNCTIONS /////
+const bcrypt = require('bcrypt');
 
+// Generate a random 6 char string
 const generateRandomString = () => {
   let charString = "abcdefghijklmnopqrstuvwxyz0123456789";
   let shortURL = "";
@@ -10,6 +12,7 @@ const generateRandomString = () => {
   return shortURL;
 }
 
+// validate the user's email matches the email in the User's database
 const emailCheck = (emailAddress, database) => {
   for (let user in database) {
     if (database[user].email === emailAddress) {
@@ -19,7 +22,19 @@ const emailCheck = (emailAddress, database) => {
   return false;
 };
 
+// validiate the user's password matches their password in the User's database
+const passwordCheck = (password, database) => {
+  for (let user in database) {
+    if (bcrypt.compareSync(password, database[user].password)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 module.exports = {
   generateRandomString,
-  emailCheck
+  emailCheck,
+  passwordCheck
+
 }

@@ -10,9 +10,9 @@ const generateRandomString = () => {
   return shortURL;
 }
 
-const emailCheck = (emailAddress) => {
-  for (let user in users) {
-    if (users[user].email === emailAddress) {
+const emailCheck = (emailAddress, database) => {
+  for (let user in database) {
+    if (database[user].email === emailAddress) {
       return true;
     }
   }

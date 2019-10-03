@@ -7,6 +7,7 @@ const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 
 const { generateRandomString } = require('./helpers');
+const { emailCheck } = require('./helpers');
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,16 +19,6 @@ app.use(cookieSession({
 }));
 
 //////// HELPER FUNCTIONS /////////
-
-const emailCheck = (emailAddress) => {
-  for (let user in users) {
-    if (users[user].email === emailAddress) {
-      return true;
-    }
-  }
-  return false;
-};
-
 
 const passwordcheck = (password) => {
   for (let user in users) {
@@ -178,7 +169,7 @@ app.post("/urls/:id", (req, res) => {
 app.post("/login", (req, res) =>{
   const email = req.body.email;
   const password = req.body.password;
-  if (!emailCheck(email)) {
+  if (!emailCheck(email, users)) {
     res.status(403).send("Email is not valid!");
   } else if (!passwordcheck(password)) {
     res.status(403).send("Invalid password");
@@ -205,7 +196,7 @@ app.post("/register", (req, res) => {
 
   if (!email || !password) {
     res.status(400).send("Please fill out the registation form as it is required.");
-  } else if (emailCheck(email)) {
+  } else if (emailCheck(email, users)) {
     res.status(400).send("This email already exist! Try again.");
   } else {
     users[id] = { id , email, password: bcrypt.hashSync(password, 10) };

@@ -54,16 +54,6 @@ const urlsForUser = (id, database) => {
   return filteredURL;
 };
 
-// const urlsForUser = (id) => {
-//   let filteredURL = {};
-//   for (let urls in urlDatabase) {
-//     if (urlDatabase[urls]["userID"] === id) {
-//       filteredURL[urls] = urlDatabase[urls];
-//     }
-//   }
-//   return filteredURL;
-// };
-
 module.exports = {
   generateRandomString,
   emailCheck,

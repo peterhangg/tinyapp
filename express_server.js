@@ -9,7 +9,8 @@ const bcrypt = require('bcrypt');
 const { generateRandomString } = require('./helpers');
 const { emailCheck } = require('./helpers');
 const { passwordCheck } = require('./helpers');
-const { idLookup} = require('./helpers');
+const { idLookup } = require('./helpers');
+const { urlsForUser } = require('./helpers');
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,17 +21,6 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
-//////// HELPER FUNCTIONS /////////
-
-const urlsForUser = (id) => {
-  let filteredURL = {};
-  for (let urls in urlDatabase) {
-    if (urlDatabase[urls]["userID"] === id) {
-      filteredURL[urls] = urlDatabase[urls];
-    }
-  }
-  return filteredURL;
-};
 ///////// DATABASE /////////
 const urlDatabase = {
   b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
@@ -68,10 +58,10 @@ app.get("/hello", (req, res) => {
 // access "My URLs" page
 app.get("/urls", (req, res) => {
   let templateVars = {
-    urls: urlsForUser(req.session.user_id),
+    urls: urlsForUser(req.session.user_id, urlDatabase),
     user: users[req.session.user_id],
   };
-  // console.log(templateVars);
+  console.log(templateVars);
   res.render("urls_index", templateVars);
 });
 
@@ -196,3 +186,7 @@ app.post("/register", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on ${PORT}!`);
 });
+
+module.exports = {
+  urlDatabase
+}

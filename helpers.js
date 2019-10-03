@@ -1,5 +1,6 @@
 ///// HELPER FUNCTIONS /////
 const bcrypt = require('bcrypt');
+const { urlDatabase } = require('./express_server');
 
 // Generate a random 6 char string
 const generateRandomString = () => {
@@ -42,10 +43,31 @@ const idLookup = (email, database) => {
   return false;
 };
 
+// Filter out the URLs in the urlDatabase that matches the USER's ID
+const urlsForUser = (id, database) => {
+  let filteredURL = {};
+  for (let urls in database) {
+    if (database[urls]["userID"] === id) {
+      filteredURL[urls] = database[urls];
+    }
+  }
+  return filteredURL;
+};
+
+// const urlsForUser = (id) => {
+//   let filteredURL = {};
+//   for (let urls in urlDatabase) {
+//     if (urlDatabase[urls]["userID"] === id) {
+//       filteredURL[urls] = urlDatabase[urls];
+//     }
+//   }
+//   return filteredURL;
+// };
+
 module.exports = {
   generateRandomString,
   emailCheck,
   passwordCheck,
-  idLookup
-
+  idLookup,
+  urlsForUser
 }

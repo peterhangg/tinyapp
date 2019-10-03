@@ -42,7 +42,10 @@ const users = {
 
 /////////// GET REQUEST ////////////
 app.get("/", (req, res) => {  //
-  res.send("Hello!");
+  if (req.session.user_id) {
+    res.redirect("/urls");
+  }
+  res.redirect("/login");
 });
 
 // get request to urlDatabase
@@ -61,7 +64,10 @@ app.get("/urls", (req, res) => {
     urls: urlsForUser(req.session.user_id, urlDatabase),
     user: users[req.session.user_id],
   };
-  console.log(templateVars);
+  // console.log(templateVars);
+  if (!req.session.user_id) {
+    res.send("You must login first to access My URLs");
+  }
   res.render("urls_index", templateVars);
 });
 
@@ -77,10 +83,16 @@ app.get("/urls/new", (req, res) => {
 
 // access page that displays shortURLs with their corresponding longURLs
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL].longURL, user: users[req.session.user_id] };
-  // console.log("this is the shortURL req.params:", req.params.shortURL);
-  console.log(templateVars);
-  res.render("urls_show", templateVars);
+  if (!users[req.session.user_id]) {
+    res.send("Must be logged in to access this page");
+  } else if (!urlDatabase[req.params.shortURL]) {
+    res.send("This TinyURL does not exist!");
+  } else if (users[req.session.user_id].id !== urlDatabase[req.params.shortURL].userID) {
+    res.send("This TinyURL does not belong to you!");
+  } else {
+    let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL].longURL, user: users[req.session.user_id], date: (new Date()).toLocaleString() };
+    res.render("urls_show", templateVars);
+  }
 });
 
 //load the webpage that is linked to it's shortURL
@@ -92,6 +104,9 @@ app.get("/u/:shortURL", (req, res) => {
 // access registration page
 app.get("/register", (req, res) => {
   let templateVars = { urls: urlDatabase,  user: users[req.session.user_id] };
+  if (req.session.user_id) {
+    res.redirect("/urls");
+  }
   res.render("register", templateVars);
 });
 
@@ -108,9 +123,8 @@ app.post("/urls", (req, res) => {
   if (!req.body.longURL.includes("http://")) { // append http to longURL
     req.body.longURL = `http://${req.body.longURL}`;
   }
-
-  urlDatabase[newShortURL] = { longURL: req.body.longURL, userID: req.session.user_id }; // adds a new shortURL to the urlDatabase when submitted in our form
-  console.log(urlDatabase);
+  urlDatabase[newShortURL] = { longURL: req.body.longURL, userID: req.session.user_id, date: (new Date()).toLocaleString() }; // adds a new shortURL to the urlDatabase when submitted in our form
+  // console.log(urlDatabase);
   res.redirect(`/urls/${newShortURL}`); // redirects to /urls after submission
   // console.log(urlDatabase);
 });
@@ -176,7 +190,7 @@ app.post("/register", (req, res) => {
     users[id] = { id , email, password: bcrypt.hashSync(password, 10) };
     // console.log("User object:",users);
     console.log("user register", id);
-    res.cookie("user_id", id);
+    req.session.user_id = id;
     console.log(users);
     res.redirect("/urls");
   }

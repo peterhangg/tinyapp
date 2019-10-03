@@ -1,27 +1,29 @@
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark bg-success">
-    <a class="navbar-brand" href="/urls">TinyApp</a>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/urls">My URLs</a>
-        <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
+        <a class="navbar-brand" style="color: orange" href="/urls">TinyApp</a>
+        <a class="nav-item nav-link" style="border: solid 1px; border-radius: 5px; margin-right: 10px;" href="/urls">My URLs</a>
+        <a class="nav-item nav-link" style="border: solid 1px; border-radius: 5px;" href="/urls/new">Create New URL</a>
       </div>
     </div>
     <div>
       <% if (user) { %>
-      <form method="POST" action="/logout">
-        <Label for="email"><h6>Logged in as: <%= user.email %></h6></Label>
-        <button type="submit" class="btn btn-info">Logout</button>
+      <form class="form-inline ml-0 my-lg-0" method="POST" action="/logout">
+      <label for="email">
+          <h7 style="margin-right: 10px;"><span style="color: white;"><%= user.email %></span></h7>
+      </label>
+        <button type="submit" class="btn btn-dark" style="border-color: white;">Logout</button>
       </form>
       <% } else { %>
-      <form method="POST" action="/login">
+      <form class="form-inline ml-0 my-lg-0" method="POST" action="/login">
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/login">Login</a>
-            <a class="nav-item nav-link" href="/register">Register</a>
+            <a class="nav-item nav-link" style="border: solid 1px; border-color: white; border-radius: 5px; margin-right: 10px;" href="/login">Login</a>
+            <a class="nav-item nav-link" style="border: solid 1px; border-color: white; border-radius: 5px;" href="/register">Register</a>
           </div>
         </div>
       </form>

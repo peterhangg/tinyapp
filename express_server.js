@@ -113,7 +113,7 @@ app.get("/urls/new", (req, res) => {
 
 // get request to shortURLs
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], user: users[req.cookies["user_id"]] };
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL].longURL, user: users[req.cookies["user_id"]] };
   // console.log("this is the shortURL req.params:", req.params.shortURL);
   console.log(templateVars)
   res.render("urls_show", templateVars);
@@ -121,7 +121,7 @@ app.get("/urls/:shortURL", (req, res) => {
 
 // get request longURL redirect
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  const longURL = urlDatabase[req.params.shortURL].longURL;
   res.redirect(longURL);
 });
 
@@ -143,7 +143,10 @@ app.post("/urls", (req, res) => {
   if (!req.body.longURL.includes("http://")) { // append http to longURL
     req.body.longURL = `http://${req.body.longURL}`;
   }
-  urlDatabase[newShortURL] = req.body.longURL; // adds a new shortURL to the urlDatabase when submitted in our form
+  console.log(req.body.longURL);
+
+  urlDatabase[newShortURL] = { longURL: req.body.longURL, userID: req.cookies["user_id"] }; // adds a new shortURL to the urlDatabase when submitted in our form
+  console.log(urlDatabase);
   res.redirect(`/urls/${newShortURL}`); // redirects to /urls after submission
   // console.log(urlDatabase);
 });
@@ -160,8 +163,10 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 // edit urls
 app.post("/urls/:id", (req, res) => {
-  const editURL = req.body.editURL;
-  const id = req.params.id;
+  let editURL = req.body.editURL;
+  if (!editURL.includes("http://")) { // append http to longURL
+  editURL = `http://${editURL}`;
+}
   if (req.cookies["user_id"]) {
     urlDatabase[req.params.id].longURL = editURL;
   };
@@ -200,15 +205,15 @@ app.post("/register", (req, res) => {
   } else if (emailCheck(email)) {
     res.status(400).send("This email already exist! Try again.");
   } else {
-    users[id] = { id, email, password };
+    users[id] = { id , email, password };
     // console.log("User object:",users);
     console.log("user register", id);
     res.cookie("user_id", id);
-    console.log("Cookies --------->", req.cookies)
+    console.log(users)
+    console.log("Cookies --------->", req.cookies["user_id"])
     res.redirect("/urls");
   }
 });
-
 
 ///////// SERVER PORT /////////
 app.listen(PORT, () => {

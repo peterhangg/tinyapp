@@ -1,6 +1,5 @@
 ///// HELPER FUNCTIONS /////
 const bcrypt = require('bcrypt');
-const { urlDatabase } = require('./express_server');
 
 // Generate a random 6 char string
 const generateRandomString = () => {
@@ -11,7 +10,7 @@ const generateRandomString = () => {
     shortURL += charString[random];
   }
   return shortURL;
-}
+};
 
 // validate the user's email matches the email in the User's database
 const emailCheck = (emailAddress, database) => {
@@ -60,4 +59,4 @@ module.exports = {
   passwordCheck,
   idLookup,
   urlsForUser
-}
+};

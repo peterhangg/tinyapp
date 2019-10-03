@@ -32,9 +32,20 @@ const passwordCheck = (password, database) => {
   return false;
 };
 
+// Validates the user's email matches the one in the database and return it's user's ID
+const idLookup = (email, database) => {
+  for (let user in database) {
+    if (database[user].email === email) {
+      return database[user].id;
+    }
+  }
+  return false;
+};
+
 module.exports = {
   generateRandomString,
   emailCheck,
-  passwordCheck
+  passwordCheck,
+  idLookup
 
 }

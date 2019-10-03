@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt');
 const { generateRandomString } = require('./helpers');
 const { emailCheck } = require('./helpers');
 const { passwordCheck } = require('./helpers');
+const { idLookup} = require('./helpers');
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,15 +21,6 @@ app.use(cookieSession({
 }));
 
 //////// HELPER FUNCTIONS /////////
-
-const idLookup = (email) => {
-  for (let user in users) {
-    if (users[user].email === email) {
-      return users[user].id;
-    }
-  }
-  return false;
-};
 
 const urlsForUser = (id) => {
   let filteredURL = {};
@@ -166,8 +158,8 @@ app.post("/login", (req, res) =>{
   } else if (!passwordCheck(password, users)) {
     res.status(403).send("Invalid password");
   } else {
-    req.session.user_id = idLookup(email);
-    console.log("user logging in ----->", idLookup(email));
+    req.session.user_id = idLookup(email, users);
+    console.log("user logging in ----->", idLookup(email, users));
     console.log(users);
 
   }

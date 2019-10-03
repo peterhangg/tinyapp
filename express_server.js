@@ -120,13 +120,12 @@ app.get("/login", (req, res) => {
 // Add new URLs to the database
 app.post("/urls", (req, res) => {
   const newShortURL = generateRandomString();
-  if (!req.body.longURL.includes("http://")) { // append http to longURL
+  if (!req.body.longURL.includes("http://")) { 
     req.body.longURL = `http://${req.body.longURL}`;
   }
-  urlDatabase[newShortURL] = { longURL: req.body.longURL, userID: req.session.user_id, date: (new Date()).toLocaleString() }; // adds a new shortURL to the urlDatabase when submitted in our form
-  // console.log(urlDatabase);
-  res.redirect(`/urls/${newShortURL}`); // redirects to /urls after submission
-  // console.log(urlDatabase);
+  urlDatabase[newShortURL] = { longURL: req.body.longURL, userID: req.session.user_id, date: (new Date()).toLocaleString() }; 
+
+  res.redirect(`/urls/${newShortURL}`); 
 });
 
 // delete URLs from the "My URLs" page
@@ -142,7 +141,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 // edit longURLs that correspond with it's shortURL
 app.post("/urls/:id", (req, res) => {
   let editURL = req.body.editURL;
-  if (!editURL.includes("http://")) { // append http:// to longURL
+  if (!editURL.includes("http://")) { 
     editURL = `http://${editURL}`;
   }
   if (!req.session.user_id) {
@@ -163,9 +162,6 @@ app.post("/login", (req, res) =>{
     res.status(403).send("Invalid password");
   } else {
     req.session.user_id = idLookup(email, users);
-    console.log("user logging in ----->", idLookup(email, users));
-    console.log(users);
-
   }
   res.redirect("/urls");
 });
@@ -188,10 +184,7 @@ app.post("/register", (req, res) => {
     res.status(400).send("This email already exist! Try again.");
   } else {
     users[id] = { id , email, password: bcrypt.hashSync(password, 10) };
-    // console.log("User object:",users);
-    console.log("user register", id);
     req.session.user_id = id;
-    console.log(users);
     res.redirect("/urls");
   }
 });

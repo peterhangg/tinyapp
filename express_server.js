@@ -82,7 +82,7 @@ const users = {
 };
 
 /////////// GET REQUEST ////////////
-app.get("/", (req, res) => {  // 
+app.get("/", (req, res) => {  //
   res.send("Hello!");
 });
 
@@ -180,7 +180,7 @@ app.post("/urls/:id", (req, res) => {
   res.redirect(`/urls`);
 });
 
-// login credentials 
+// login credentials
 app.post("/login", (req, res) =>{
   const email = req.body.email;
   const password = req.body.password;

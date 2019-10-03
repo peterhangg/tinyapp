@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 
+const { generateRandomString } = require('./helpers');
+
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser());
@@ -16,15 +18,6 @@ app.use(cookieSession({
 }));
 
 //////// HELPER FUNCTIONS /////////
-function generateRandomString() {
-  let charString = "abcdefghijklmnopqrstuvwxyz0123456789";
-  let shortURL = "";
-  for (let i = 0; i < 6; i++) {
-    let random = Math.floor(Math.random() * charString.length);
-    shortURL += charString[random];
-  }
-  return shortURL;
-}
 
 const emailCheck = (emailAddress) => {
   for (let user in users) {
@@ -34,6 +27,7 @@ const emailCheck = (emailAddress) => {
   }
   return false;
 };
+
 
 const passwordcheck = (password) => {
   for (let user in users) {

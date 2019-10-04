@@ -116,8 +116,8 @@ app.get("/login", (req, res) => {
 // Add new URLs to the database
 app.post("/urls", (req, res) => {
   const newShortURL = generateRandomString();
-  if (!req.body.longURL.includes("http://")) { 
-    req.body.longURL = `http://${req.body.longURL}`;
+  if (!req.body.longURL.includes("https://")) { 
+    req.body.longURL = `https://${req.body.longURL}`;
   }
   urlDatabase[newShortURL] = { longURL: req.body.longURL, userID: req.session.user_id, date: (new Date()).toLocaleString() }; 
 
@@ -137,8 +137,8 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 // edit longURLs that correspond with it's shortURL
 app.post("/urls/:id", (req, res) => {
   let editURL = req.body.editURL;
-  if (!editURL.includes("http://")) { 
-    editURL = `http://${editURL}`;
+  if (!editURL.includes("https://")) { 
+    editURL = `https://${editURL}`;
   }
   if (!req.session.user_id) {
     res.send("Only logged-in users can edit URLs!");

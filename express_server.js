@@ -53,11 +53,6 @@ app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
-app.get("/hello", (req, res) => {
-  let templateVars = { greeting: 'Hello World!' };
-  res.render("hello_world", templateVars);
-});
-
 // access "My URLs" page
 app.get("/urls", (req, res) => {
   let templateVars = {
@@ -67,6 +62,7 @@ app.get("/urls", (req, res) => {
   // console.log(templateVars);
   if (!req.session.user_id) {
     res.send("You must login first to access My URLs");
+    return;
   }
   res.render("urls_index", templateVars);
 });

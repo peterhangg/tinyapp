@@ -6,7 +6,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 ##### User's TinyURL's collection
 !["User's TinyURLs collection"](/image/myURLs.jpeg)
 ##### Creating TinyURLs
-!["Create a TinyURL"](/image/creatURL.jpeg)
+!["Create a TinyURL"](/image/createURL.jpeg)
 ##### Editing TinyURLs
 !["Edit TinyURLs"](/image/editURLs.jpeg)
 ##### Login Page
